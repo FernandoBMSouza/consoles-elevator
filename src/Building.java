@@ -14,7 +14,7 @@ public class Building extends JPanel {
         for (int i = 0; i < floors.length; i++) {
             floors[i] = new Floor(this, floorsQuantity - i - 1, i, semaphore);
         }
-        elevator = new Elevator(this, semaphore);
+        elevator = new Elevator(this);
     }
 
     // #region

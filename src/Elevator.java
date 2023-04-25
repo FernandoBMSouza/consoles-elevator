@@ -1,5 +1,4 @@
 import java.awt.Graphics;
-import java.util.concurrent.Semaphore;
 
 import javax.swing.ImageIcon;
 
@@ -10,11 +9,9 @@ public class Elevator extends Thread {
     boolean open, available;
     private int y, x;
     int interval;
-    Semaphore semaphore;
 
-    public Elevator(Building building, Semaphore semaphore) {
+    public Elevator(Building building) {
         this.building = building;
-        this.semaphore = semaphore;
         sprOpen = new ImageIcon(getClass().getResource(".\\content\\elevator_open.png"));
         sprClose = new ImageIcon(getClass().getResource(".\\content\\elevator_closed.png"));
         currentFloor = building.getFloors()[0];
@@ -27,10 +24,6 @@ public class Elevator extends Thread {
 
     public int getX() {
         return x;
-    }
-
-    public int getY() {
-        return y;
     }
 
     public Floor getCurrentFloor() {
@@ -74,6 +67,16 @@ public class Elevator extends Thread {
             }
         }
         currentFloor = floor;
+    }
+
+    public void openDoor() {
+        open = true;
+        building.paintOver();
+    }
+
+    public void closeDoor() {
+        open = false;
+        building.paintOver();
     }
 
     public void draw(Graphics g) {

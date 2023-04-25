@@ -22,7 +22,7 @@ public class Passenger extends Thread {
         x = 40 * queuePosition + 150;
         y = initialFloor.getY() + 20;
         interval = 5;
-        elevatorWaitTime = 200;
+        elevatorWaitTime = 500;
     }
 
     @Override
@@ -48,8 +48,9 @@ public class Passenger extends Thread {
             }
             semaphore.release();
 
-            if (queuePosition < 0)
+            if (queuePosition < 0) {
                 moveHorizontal(building.getFloors()[currentFloor.getNumber()].getWidth());
+            }
         }
     }
 
@@ -100,13 +101,27 @@ public class Passenger extends Thread {
     public void travelElevator() {
         if (currentFloor == building.getElevator().getCurrentFloor() && queuePosition == 0) {
             queuePosition = -1;
+            building.getElevator().openDoor();
             moveHorizontal(building.getElevator().getX() + 60);
+            building.getElevator().closeDoor();
+            updateCurrentFloorQueue();
             Floor destinationFloor = findDestinationFloor();
             building.getElevator().setDestination(destinationFloor);
             building.getElevator().setAvailable(false);
             moveVertical(destinationFloor.getY() + 20);
+            building.getElevator().openDoor();
             building.getElevator().setAvailable(true);
             currentFloor = destinationFloor;
+            building.getElevator().closeDoor();
+        }
+    }
+
+    private void updateCurrentFloorQueue() {
+        for (Passenger p : currentFloor.getPassengers()) {
+            if (p.queuePosition >= 0) {
+                p.queuePosition--;
+                p.moveHorizontal(40 * p.queuePosition + 150);
+            }
         }
     }
 }
