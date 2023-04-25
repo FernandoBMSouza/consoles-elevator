@@ -41,8 +41,13 @@ public class Elevator extends Thread {
     @Override
     public void run() {
         super.run();
-        if (!available) {
-            visitFloor(destinationFloor);
+        while (true) {
+            // Só DEUS explica a linha debaixo
+            System.out.println("DEUS ESTÁ AQUI - so funfa se tiver esse print");
+            // depois adiciona !available || elevador foi chamado
+            if (!available) {
+                visitFloor(destinationFloor);
+            }
         }
     }
 
