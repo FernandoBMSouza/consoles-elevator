@@ -1,16 +1,20 @@
 import java.awt.Graphics;
+import java.util.concurrent.Semaphore;
+
 import javax.swing.JPanel;
 
 public class Building extends JPanel {
     private Floor[] floors;
     private Elevator elevator;
+    private Semaphore semaphore;
 
     public Building(int floorsQuantity) {
+        semaphore = new Semaphore(1);
         floors = new Floor[floorsQuantity];
         for (int i = 0; i < floors.length; i++) {
-            floors[i] = new Floor(this, floorsQuantity - i - 1, i);
+            floors[i] = new Floor(this, floorsQuantity - i - 1, i, semaphore);
         }
-        elevator = new Elevator(this);
+        elevator = new Elevator(this, semaphore);
     }
 
     // #region

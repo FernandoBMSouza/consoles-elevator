@@ -10,9 +10,11 @@ public class Elevator extends Thread {
     boolean open, available;
     private int y, x;
     int interval;
+    Semaphore semaphore;
 
-    public Elevator(Building building) {
+    public Elevator(Building building, Semaphore semaphore) {
         this.building = building;
+        this.semaphore = semaphore;
         sprOpen = new ImageIcon(getClass().getResource(".\\content\\elevator_open.png"));
         sprClose = new ImageIcon(getClass().getResource(".\\content\\elevator_closed.png"));
         currentFloor = building.getFloors()[0];
@@ -27,12 +29,16 @@ public class Elevator extends Thread {
         return x;
     }
 
-    public Floor getFloor() {
+    public Floor getCurrentFloor() {
         return currentFloor;
     }
 
     public void setAvailable(boolean value) {
         available = value;
+    }
+
+    public boolean isAvailable() {
+        return available;
     }
 
     public void setDestination(Floor floor) {
@@ -43,16 +49,7 @@ public class Elevator extends Thread {
     public void run() {
         super.run();
         while (true) {
-            // depois adiciona !available || elevador foi chamado
-            if (!available) {
-                visitFloor(destinationFloor);
-            }
-
-            try {
-                Thread.sleep(interval);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            visitFloor(destinationFloor);
         }
     }
 

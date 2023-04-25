@@ -1,5 +1,7 @@
 import java.awt.Graphics;
 import java.util.Random;
+import java.util.concurrent.Semaphore;
+
 import javax.swing.ImageIcon;
 
 public class Passenger extends Thread {
@@ -8,10 +10,12 @@ public class Passenger extends Thread {
     private ImageIcon sprite;
     private Floor currentFloor;
     private Random random;
+    private Semaphore semaphore;
 
-    public Passenger(Building building, Floor initialFloor, int queuePosition) {
+    public Passenger(Building building, Floor initialFloor, int queuePosition, Semaphore semaphore) {
         this.building = building;
         this.queuePosition = queuePosition;
+        this.semaphore = semaphore;
         random = new Random();
         currentFloor = initialFloor;
         sprite = new ImageIcon(getClass().getResource(".\\content\\passenger.png"));
@@ -23,7 +27,21 @@ public class Passenger extends Thread {
     @Override
     public void run() {
         super.run();
-        travelElevator();
+        while (true) {
+
+            try {
+                semaphore.acquire();
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
+
+            if (queuePosition == 0) {
+                building.getElevator().setDestination(currentFloor);
+                travelElevator();
+            }
+
+            semaphore.release();
+        }
     }
 
     public void draw(Graphics g) {
@@ -71,7 +89,7 @@ public class Passenger extends Thread {
     }
 
     public void travelElevator() {
-        if (currentFloor == building.getElevator().getFloor() && queuePosition == 0) {
+        if (currentFloor == building.getElevator().getCurrentFloor() && queuePosition == 0) {
             queuePosition = -1;
             moveHorizontal(building.getElevator().getX() + 30);
             Floor destinationFloor = findDestinationFloor();

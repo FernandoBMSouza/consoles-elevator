@@ -1,5 +1,7 @@
 import java.awt.Graphics;
 import java.util.Random;
+import java.util.concurrent.Semaphore;
+
 import javax.swing.ImageIcon;
 
 public class Floor {
@@ -8,17 +10,19 @@ public class Floor {
     private Passenger[] passengers;
     private int y, number;
     private Random random;
+    private Semaphore semaphore;
 
-    public Floor(Building building, int y, int number) {
+    public Floor(Building building, int y, int number, Semaphore semaphore) {
         this.building = building;
         sprite = new ImageIcon(getClass().getResource(".\\content\\floor.png"));
         this.y = y * sprite.getIconHeight();
         this.number = number;
+        this.semaphore = semaphore;
 
         random = new Random();
         passengers = new Passenger[random.nextInt(6)];
         for (int i = 0; i < passengers.length; i++) {
-            passengers[i] = new Passenger(building, this, i);
+            passengers[i] = new Passenger(building, this, i, semaphore);
         }
     }
 
