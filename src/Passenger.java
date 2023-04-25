@@ -23,7 +23,7 @@ public class Passenger extends Thread {
     @Override
     public void run() {
         super.run();
-        moveHorizontal(building.getElevator().getX() + 30);
+        enterElevator();
     }
 
     public void draw(Graphics g) {
@@ -38,21 +38,25 @@ public class Passenger extends Thread {
         return floor;
     }
 
-    private void moveHorizontal(int destinationX) {
-        if (currentFloor == building.getElevator().getFloor() && queuePosition == 0) {
-            while (x != destinationX) {
-                if (x > destinationX) {
-                    x--;
-                } else {
-                    x++;
-                }
-                building.paintOver();
-                try {
-                    Thread.sleep(interval);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+    private void move(int destinationX) {
+        while (x != destinationX) {
+            if (x > destinationX) {
+                x--;
+            } else {
+                x++;
             }
+            building.paintOver();
+            try {
+                Thread.sleep(interval);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void enterElevator() {
+        if (currentFloor == building.getElevator().getFloor() && queuePosition == 0) {
+            move(building.getElevator().getX() + 30);
         }
     }
 }
