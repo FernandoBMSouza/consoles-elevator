@@ -4,7 +4,7 @@ import javax.swing.ImageIcon;
 
 public class Passenger extends Thread {
     Building building;
-    int x, y, queuePosition;
+    int x, y, queuePosition, interval;
     ImageIcon sprite;
     Floor currentFloor, destinationFloor;
     Random random;
@@ -17,6 +17,13 @@ public class Passenger extends Thread {
         x = 40 * queuePosition + 150;
         y = initialFloor.getY() + 20;
         destinationFloor = findDestinationFloor();
+        interval = 5;
+    }
+
+    @Override
+    public void run() {
+        super.run();
+        moveHorizontal(building.getElevator().getX());
     }
 
     public void draw(Graphics g) {
@@ -29,5 +36,21 @@ public class Passenger extends Thread {
             floor = building.getFloors()[random.nextInt(building.getFloors().length)];
         }
         return floor;
+    }
+
+    private void moveHorizontal(int destinationX) {
+        while (x != destinationX) {
+            if (x > destinationX) {
+                x--;
+            } else {
+                x++;
+            }
+            building.paintOver();
+            try {
+                Thread.sleep(interval);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

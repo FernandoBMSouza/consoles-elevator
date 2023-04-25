@@ -7,7 +7,7 @@ public class Elevator extends Thread {
     ImageIcon sprOpen, sprClose;
     Floor currentFloor;
     boolean open;
-    int y, x;
+    private int y, x;
     long interval;
 
     public Elevator(Building building) {
@@ -19,6 +19,10 @@ public class Elevator extends Thread {
         x = 30;
         open = false;
         interval = 5;
+    }
+
+    public int getX() {
+        return x;
     }
 
     @Override

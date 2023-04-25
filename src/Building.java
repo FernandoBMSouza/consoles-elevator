@@ -21,6 +21,10 @@ public class Building extends JPanel {
     public Floor[] getFloors() {
         return floors;
     }
+
+    public Elevator getElevator() {
+        return elevator;
+    }
     // #endregion
 
     @Override
@@ -46,5 +50,10 @@ public class Building extends JPanel {
 
     public void start() {
         elevator.start();
+        for (int i = 0; i < floors.length; i++) {
+            for (int j = 0; j < floors[i].getPassengers().length; j++) {
+                floors[i].getPassengers()[j].start();
+            }
+        }
     }
 }
