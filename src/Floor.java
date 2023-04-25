@@ -10,14 +10,12 @@ public class Floor {
     private Passenger[] passengers;
     private int y, number;
     private Random random;
-    private Semaphore semaphore;
 
     public Floor(Building building, int y, int number, Semaphore semaphore) {
         this.building = building;
         sprite = new ImageIcon(getClass().getResource(".\\content\\floor.png"));
         this.y = y * sprite.getIconHeight();
         this.number = number;
-        this.semaphore = semaphore;
 
         random = new Random();
         passengers = new Passenger[random.nextInt(6)];
