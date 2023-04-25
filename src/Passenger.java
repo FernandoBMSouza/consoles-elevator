@@ -22,7 +22,7 @@ public class Passenger extends Thread {
         x = 40 * queuePosition + 150;
         y = initialFloor.getY() + 20;
         interval = 5;
-        elevatorWaitTime = 3000;
+        elevatorWaitTime = 2500;
     }
 
     @Override
@@ -36,6 +36,7 @@ public class Passenger extends Thread {
                 e1.printStackTrace();
             }
 
+            // Tentar melhorar esses dois ifs depois
             if (queuePosition == 0 && building.getElevator().getCurrentFloor().getNumberOfPassengers() <= 0) {
                 callElevator();
                 enterElevator();
@@ -51,12 +52,15 @@ public class Passenger extends Thread {
             }
             semaphore.release();
 
+            if (queuePosition < 0) {
+                moveHorizontal(building.getFloors()[currentFloor.getNumber()].getWidth());
+            }
+
             try {
                 Thread.sleep(elevatorWaitTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
         }
     }
 
@@ -89,6 +93,7 @@ public class Passenger extends Thread {
     }
 
     public void travelElevator(Floor destinationFloor) {
+        building.getElevator().closeDoor();
         building.getElevator().setDestination(destinationFloor);
         while (currentFloor != destinationFloor) {
             y = building.getElevator().getY() + 20;
@@ -100,13 +105,17 @@ public class Passenger extends Thread {
     }
 
     public void enterElevator() {
+        building.getElevator().openDoor();
         currentFloor.decreaseNumberOfPassengers();
         moveHorizontal(building.getElevator().getX() + 60);
         queuePosition = -1;
     }
 
     public void exitElevator() {
-        moveHorizontal(building.getFloors()[currentFloor.getNumber()].getWidth());
+        building.getElevator().openDoor();
+        moveHorizontal(150);
+        building.getElevator().closeDoor();
+        // moveHorizontal(building.getFloors()[currentFloor.getNumber()].getWidth());
     }
 
     public void callElevator() {
