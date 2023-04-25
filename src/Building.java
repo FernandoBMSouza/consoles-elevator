@@ -26,11 +26,17 @@ public class Building extends JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-
         for (int i = 0; i < floors.length; i++) {
             floors[i].draw(g);
         }
+
         elevator.draw(g);
+
+        for (int i = 0; i < floors.length; i++) {
+            for (int j = 0; j < floors[i].getPassengers().length; j++) {
+                floors[i].getPassengers()[j].draw(g);
+            }
+        }
     }
 
     public void paintOver() {

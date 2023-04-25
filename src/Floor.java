@@ -1,16 +1,25 @@
 import java.awt.Graphics;
+import java.util.Random;
 import javax.swing.ImageIcon;
 
 public class Floor {
-    private Building building;
-    private ImageIcon sprite;
-    private int y, number;
+    Building building;
+    ImageIcon sprite;
+    Passenger[] passengers;
+    int y, number;
+    Random random;
 
     public Floor(Building building, int y, int number) {
         this.building = building;
         sprite = new ImageIcon(getClass().getResource(".\\content\\floor.png"));
         this.y = y * sprite.getIconHeight();
         this.number = number;
+
+        random = new Random();
+        passengers = new Passenger[random.nextInt(6)];
+        for (int i = 0; i < passengers.length; i++) {
+            passengers[i] = new Passenger(building, this, i);
+        }
     }
 
     // #region Properties
@@ -28,6 +37,10 @@ public class Floor {
 
     public int getY() {
         return y;
+    }
+
+    public Passenger[] getPassengers() {
+        return passengers;
     }
     // #endregion
 

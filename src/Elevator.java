@@ -24,7 +24,7 @@ public class Elevator extends Thread {
     @Override
     public void run() {
         super.run();
-        visitFloor(building.getFloors()[9]);
+        // visitFloor(building.getFloors()[5]);
     }
 
     public void visitFloor(Floor destinationFloor) {
