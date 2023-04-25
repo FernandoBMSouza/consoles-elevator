@@ -25,6 +25,10 @@ public class Elevator extends Thread {
         return x;
     }
 
+    public Floor getFloor() {
+        return currentFloor;
+    }
+
     @Override
     public void run() {
         super.run();
