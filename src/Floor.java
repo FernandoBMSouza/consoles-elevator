@@ -8,7 +8,7 @@ public class Floor {
     private Building building;
     private ImageIcon sprite;
     private Passenger[] passengers;
-    private int y, number;
+    private int y, number, numberOfPassengers;
     private Random random;
 
     public Floor(Building building, int y, int number, Semaphore semaphore) {
@@ -18,7 +18,8 @@ public class Floor {
         this.number = number;
 
         random = new Random();
-        passengers = new Passenger[random.nextInt(6)];
+        numberOfPassengers = random.nextInt(6);
+        passengers = new Passenger[numberOfPassengers];
         for (int i = 0; i < passengers.length; i++) {
             passengers[i] = new Passenger(building, this, i, semaphore);
         }
@@ -43,6 +44,14 @@ public class Floor {
 
     public Passenger[] getPassengers() {
         return passengers;
+    }
+
+    public void decreaseNumberOfPassengers() {
+        numberOfPassengers--;
+    }
+
+    public int getNumberOfPassengers() {
+        return numberOfPassengers;
     }
     // #endregion
 

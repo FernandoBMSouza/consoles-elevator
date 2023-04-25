@@ -36,21 +36,22 @@ public class Passenger extends Thread {
                 e1.printStackTrace();
             }
 
-            if (queuePosition == 0) {
-                building.getElevator().setDestination(currentFloor);
-                travelElevator();
-
-                try {
-                    Thread.sleep(elevatorWaitTime);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            if (queuePosition == 0 && building.getElevator().getCurrentFloor() == currentFloor) {
+                enterElevator();
+                updateCurrentFloorQueue();
+                travelElevator(findDestinationFloor());
+                exitElevator();
+            } else {
+                callElevator();
             }
             semaphore.release();
 
-            if (queuePosition < 0) {
-                moveHorizontal(building.getFloors()[currentFloor.getNumber()].getWidth());
+            try {
+                Thread.sleep(elevatorWaitTime);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+
         }
     }
 
@@ -82,37 +83,30 @@ public class Passenger extends Thread {
         }
     }
 
-    public void moveVertical(int destinationY) {
-        while (y != destinationY) {
-            if (y > destinationY) {
-                y--;
-            } else {
-                y++;
-            }
+    public void travelElevator(Floor destinationFloor) {
+        building.getElevator().setDestination(destinationFloor);
+        while (currentFloor != destinationFloor) {
+            y = building.getElevator().getY() + 20;
             building.paintOver();
-            try {
-                Thread.sleep(interval);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if (building.getElevator().getCurrentFloor() == destinationFloor) {
+                currentFloor = destinationFloor;
             }
         }
     }
 
-    public void travelElevator() {
-        if (currentFloor == building.getElevator().getCurrentFloor() && queuePosition == 0) {
-            queuePosition = -1;
-            building.getElevator().openDoor();
-            moveHorizontal(building.getElevator().getX() + 60);
-            building.getElevator().closeDoor();
-            updateCurrentFloorQueue();
-            Floor destinationFloor = findDestinationFloor();
-            building.getElevator().setDestination(destinationFloor);
-            building.getElevator().setAvailable(false);
-            moveVertical(destinationFloor.getY() + 20);
-            building.getElevator().openDoor();
-            building.getElevator().setAvailable(true);
-            currentFloor = destinationFloor;
-            building.getElevator().closeDoor();
+    public void enterElevator() {
+        currentFloor.decreaseNumberOfPassengers();
+        moveHorizontal(building.getElevator().getX() + 60);
+        queuePosition = -1;
+    }
+
+    public void exitElevator() {
+        moveHorizontal(building.getFloors()[currentFloor.getNumber()].getWidth());
+    }
+
+    public void callElevator() {
+        if (building.getElevator().getCurrentFloor().getNumberOfPassengers() <= 0) {
+            building.getElevator().setDestination(currentFloor);
         }
     }
 

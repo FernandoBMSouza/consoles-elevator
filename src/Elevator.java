@@ -3,12 +3,12 @@ import java.awt.Graphics;
 import javax.swing.ImageIcon;
 
 public class Elevator extends Thread {
-    Building building;
-    ImageIcon sprOpen, sprClose;
-    Floor currentFloor, destinationFloor;
-    boolean open, available;
+    private Building building;
+    private ImageIcon sprOpen, sprClose;
+    private Floor currentFloor, destinationFloor;
+    private boolean open;
     private int y, x;
-    int interval;
+    private int interval;
 
     public Elevator(Building building) {
         this.building = building;
@@ -19,23 +19,19 @@ public class Elevator extends Thread {
         x = 30;
         open = false;
         interval = 5;
-        available = true;
+        destinationFloor = currentFloor;
     }
 
     public int getX() {
         return x;
     }
 
+    public int getY() {
+        return y;
+    }
+
     public Floor getCurrentFloor() {
         return currentFloor;
-    }
-
-    public void setAvailable(boolean value) {
-        available = value;
-    }
-
-    public boolean isAvailable() {
-        return available;
     }
 
     public void setDestination(Floor floor) {
