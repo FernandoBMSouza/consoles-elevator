@@ -8,12 +8,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Window extends JFrame implements ActionListener {
-    private static Building building;
-    JButton btnStart;
-    JPanel pnlUI;
+    private Building building;
+    private JButton btnStart;
+    private JPanel pnlUI;
 
     public Window(Building building) {
-        Window.building = building;
+        this.building = building;
         windowConfig();
     }
 

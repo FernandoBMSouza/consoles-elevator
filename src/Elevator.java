@@ -5,8 +5,8 @@ import javax.swing.ImageIcon;
 public class Elevator extends Thread {
     Building building;
     ImageIcon sprOpen, sprClose;
-    Floor currentFloor;
-    boolean open;
+    Floor currentFloor, destinationFloor;
+    boolean open, available;
     private int y, x;
     long interval;
 
@@ -19,6 +19,7 @@ public class Elevator extends Thread {
         x = 30;
         open = false;
         interval = 5;
+        available = true;
     }
 
     public int getX() {
@@ -29,15 +30,25 @@ public class Elevator extends Thread {
         return currentFloor;
     }
 
+    public void isAvailable(boolean value) {
+        available = value;
+    }
+
+    public void setDestination(Floor floor) {
+        destinationFloor = floor;
+    }
+
     @Override
     public void run() {
         super.run();
-        // visitFloor(building.getFloors()[5]);
+        if (!available) {
+            visitFloor(destinationFloor);
+        }
     }
 
-    public void visitFloor(Floor destinationFloor) {
-        while (y != destinationFloor.getY()) {
-            if (destinationFloor.getY() > y) {
+    public void visitFloor(Floor floor) {
+        while (y != floor.getY()) {
+            if (floor.getY() > y) {
                 y++;
             } else {
                 y--;

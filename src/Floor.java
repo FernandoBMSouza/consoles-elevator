@@ -3,11 +3,11 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 
 public class Floor {
-    Building building;
-    ImageIcon sprite;
-    Passenger[] passengers;
-    int y, number;
-    Random random;
+    private Building building;
+    private ImageIcon sprite;
+    private Passenger[] passengers;
+    private int y, number;
+    private Random random;
 
     public Floor(Building building, int y, int number) {
         this.building = building;

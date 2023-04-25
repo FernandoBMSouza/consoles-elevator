@@ -2,8 +2,8 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 
 public class Building extends JPanel {
-    Floor[] floors;
-    Elevator elevator;
+    private Floor[] floors;
+    private Elevator elevator;
 
     public Building(int floorsQuantity) {
         floors = new Floor[floorsQuantity];
@@ -49,11 +49,11 @@ public class Building extends JPanel {
     }
 
     public void start() {
-        elevator.start();
         for (int i = 0; i < floors.length; i++) {
             for (int j = 0; j < floors[i].getPassengers().length; j++) {
                 floors[i].getPassengers()[j].start();
             }
         }
+        elevator.start();
     }
 }
