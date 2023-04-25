@@ -72,11 +72,13 @@ public class Passenger extends Thread {
 
     public void travelElevator() {
         if (currentFloor == building.getElevator().getFloor() && queuePosition == 0) {
+            queuePosition = -1;
             moveHorizontal(building.getElevator().getX() + 30);
             Floor destinationFloor = findDestinationFloor();
             building.getElevator().setDestination(destinationFloor);
-            building.getElevator().isAvailable(false);
+            building.getElevator().setAvailable(false);
             moveVertical(destinationFloor.getY() + 20);
+            building.getElevator().setAvailable(true);
             moveHorizontal(building.getFloors()[destinationFloor.getNumber()].getWidth());
         }
     }

@@ -1,4 +1,5 @@
 import java.awt.Graphics;
+import java.util.concurrent.Semaphore;
 
 import javax.swing.ImageIcon;
 
@@ -8,7 +9,7 @@ public class Elevator extends Thread {
     Floor currentFloor, destinationFloor;
     boolean open, available;
     private int y, x;
-    long interval;
+    int interval;
 
     public Elevator(Building building) {
         this.building = building;
@@ -30,7 +31,7 @@ public class Elevator extends Thread {
         return currentFloor;
     }
 
-    public void isAvailable(boolean value) {
+    public void setAvailable(boolean value) {
         available = value;
     }
 
@@ -71,7 +72,7 @@ public class Elevator extends Thread {
                 e.printStackTrace();
             }
         }
-        currentFloor = destinationFloor;
+        currentFloor = floor;
     }
 
     public void draw(Graphics g) {
