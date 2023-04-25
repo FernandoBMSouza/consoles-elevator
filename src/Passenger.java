@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 
 public class Passenger extends Thread {
     private Building building;
-    private int x, y, queuePosition, interval;
+    private int x, y, queuePosition, interval, elevatorWaitTime;
     private ImageIcon sprite;
     private Floor currentFloor;
     private Random random;
@@ -22,6 +22,7 @@ public class Passenger extends Thread {
         x = 40 * queuePosition + 150;
         y = initialFloor.getY() + 20;
         interval = 5;
+        elevatorWaitTime = 200;
     }
 
     @Override
@@ -38,9 +39,17 @@ public class Passenger extends Thread {
             if (queuePosition == 0) {
                 building.getElevator().setDestination(currentFloor);
                 travelElevator();
-            }
 
+                try {
+                    Thread.sleep(elevatorWaitTime);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             semaphore.release();
+
+            if (queuePosition < 0)
+                moveHorizontal(building.getFloors()[currentFloor.getNumber()].getWidth());
         }
     }
 
@@ -91,13 +100,13 @@ public class Passenger extends Thread {
     public void travelElevator() {
         if (currentFloor == building.getElevator().getCurrentFloor() && queuePosition == 0) {
             queuePosition = -1;
-            moveHorizontal(building.getElevator().getX() + 30);
+            moveHorizontal(building.getElevator().getX() + 60);
             Floor destinationFloor = findDestinationFloor();
             building.getElevator().setDestination(destinationFloor);
             building.getElevator().setAvailable(false);
             moveVertical(destinationFloor.getY() + 20);
             building.getElevator().setAvailable(true);
-            moveHorizontal(building.getFloors()[destinationFloor.getNumber()].getWidth());
+            currentFloor = destinationFloor;
         }
     }
 }

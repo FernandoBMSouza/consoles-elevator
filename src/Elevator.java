@@ -29,6 +29,10 @@ public class Elevator extends Thread {
         return x;
     }
 
+    public int getY() {
+        return y;
+    }
+
     public Floor getCurrentFloor() {
         return currentFloor;
     }

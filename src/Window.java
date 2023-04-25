@@ -33,7 +33,7 @@ public class Window extends JFrame implements ActionListener {
         setSize(new Dimension(building.getFloors()[0].getWidth(), building.getHeight()));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setResizable(false);
+        //setResizable(false);
         add(building, BorderLayout.CENTER);
         add(uiConfig(), BorderLayout.SOUTH);
         setVisible(true);
