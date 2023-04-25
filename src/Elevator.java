@@ -42,11 +42,15 @@ public class Elevator extends Thread {
     public void run() {
         super.run();
         while (true) {
-            // Só DEUS explica a linha debaixo
-            System.out.println("DEUS ESTÁ AQUI - so funfa se tiver esse print");
             // depois adiciona !available || elevador foi chamado
             if (!available) {
                 visitFloor(destinationFloor);
+            }
+
+            try {
+                Thread.sleep(interval);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
