@@ -22,6 +22,7 @@ public class Passenger extends Thread {
         x = 40 * queuePosition + 150;
         y = initialFloor.getY() + 20;
         interval = 5;
+        // Encontrar um forma melhor de fazer esse tempo depois, isso pode causar bug
         elevatorWaitTime = 2500;
     }
 
